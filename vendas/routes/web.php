@@ -11,6 +11,15 @@
 |
 */
 
+use Illuminate\Support\Facades\DB;
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/categorias', function () {
+  $categorias = DB::table('categorias')->get();
+  $nomes = DB::table('categorias')->pluck('nome');
+
+  return view('categorias', compact('categorias','nomes')  );
 });
