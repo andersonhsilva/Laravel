@@ -12,12 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('corpo');
+    return view('welcome');
 });
+
+Route::get('/produtos_sessao/{palavra}','ProdutoControlador@sessaoProduto');
 
 Route::get('/pagina', function() {
   return view('pagina');
 });
+
+Route::get('/produtos','ProdutoControlador@listar');
 
 Route::get('/ola', function() {
     $result = view('minhaView')
