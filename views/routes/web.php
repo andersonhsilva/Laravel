@@ -15,8 +15,8 @@ Route::get('/', function () {
     return view('corpo');
 });
 
-Route::get('primeiraView', function() {
-  return view('minhaView');
+Route::get('/pagina', function() {
+  return view('pagina');
 });
 
 Route::get('/ola', function() {
