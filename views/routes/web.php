@@ -15,7 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/mostrar_opcoes','ProdutoControlador@mostrar_opcoes');
+
 Route::get('/produtos_sessao/{palavra}','ProdutoControlador@sessaoProduto');
+Route::get('/opcoes/{opcao}','ProdutoControlador@opcoes');
 
 Route::get('/pagina', function() {
   return view('pagina');

@@ -21,4 +21,13 @@ class ProdutoControlador extends Controller {
     public function sessaoProduto($palavra){
       return View('sessao_produtos', compact('palavra'));
     }
+
+    public function mostrar_opcoes(){
+      return View('mostrar_opcoes');
+    }
+
+    public function opcoes($opcao){
+      return View('opcoes', compact('opcao'));
+    }
+
 }
