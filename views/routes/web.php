@@ -20,6 +20,10 @@ Route::get('/mostrar_opcoes','ProdutoControlador@mostrar_opcoes');
 Route::get('/produtos_sessao/{palavra}','ProdutoControlador@sessaoProduto');
 Route::get('/opcoes/{opcao}','ProdutoControlador@opcoes');
 
+Route::get('/loop/for/{n}','ProdutoControlador@loopFor');
+Route::get('/loop/foreach','ProdutoControlador@loopForeach');
+
+
 Route::get('/pagina', function() {
   return view('pagina');
 });

@@ -30,4 +30,21 @@ class ProdutoControlador extends Controller {
       return View('opcoes', compact('opcao'));
     }
 
+    public function loopFor($n){
+      return View('loop_for', compact('n'));
+    }
+
+    public function loopForeach(){
+      $produtos = [
+        ["id" => 1, "nome" => "caneca"],
+        ["id" => 2, "nome" => "armamento"],
+        ["id" => 3, "nome" => "munições"],
+        ["id" => 4, "nome" => "coldre"],
+        ["id" => 5, "nome" => "alvo"],
+        ["id" => 6, "nome" => "faca na caveira"]
+      ];
+      return View('loop_foreach', compact('produtos'));
+    }
+
+
 }

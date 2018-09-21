@@ -8,16 +8,17 @@
 <!-- sobrescreve a section "corpo" do arquivo base.blade.php -->
 @section('corpo')
   <!-- @parent <- esta tag mostra o conteudo da section "corpo" do arquivo base.blade.php -->
-  <p>
-    </div>
     <div class="container">
       <div class="row">
         <b>Lista de Produtos:</b>
       </div>
-      <div class="row">
+      <div class="col-12">
         @if (isset($produtos))
           @if (count($produtos) > 0)
-            temos produtos
+            <h1>temos produtos</h1>
+            @foreach($produtos as $produto)
+              <p>Nome: {{$produto}}</p>
+            @endforeach
           @endif
         @endif
         @empty($produtos)
@@ -25,5 +26,4 @@
         @endempty
       </div>
     </div>
-  </p>
 @endsection
