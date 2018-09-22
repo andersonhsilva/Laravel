@@ -52,6 +52,9 @@ Route::get('/categorias', function () {
   // ordenando por nome - asc / desc
   $categorias = DB::table('categorias')->orderBy('nome','desc')->get();
 
+  // consultado pelo select da maneira tradicional
+  $categorias = DB::select('select * from categorias where nome like ?', ['%p%']);
+
   //-----------------------------------------------------
 
   // recupera todos os dados do banco na tabela especifica apenas do primeiro elemento
@@ -66,6 +69,16 @@ Route::get('/categorias', function () {
 
 });
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/insert/categorias/{nome}', function ($nome) {
+
+  //inseri no banco de forma onde tambem aceita varios de um array
+  //$id = DB::table('categorias')->insertGetId([['nome' => $nome]]);
+
+  //inseri no banco retornando o id do mesmo
+  $id = DB::table('categorias')->insertGetId(['nome' => $nome]);
+  if ($id){
+    echo "Categoria cadastrada com sucesso -> ID: ".$id;
+  }
+
+
 });
