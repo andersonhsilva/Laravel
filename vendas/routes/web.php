@@ -80,5 +80,11 @@ Route::get('/insert/categorias/{nome}', function ($nome) {
     echo "Categoria cadastrada com sucesso -> ID: ".$id;
   }
 
+});
+
+Route::get('/update/categorias/{id}/{nome}', function ($id, $nome) {
+
+  //atualiza no banco retornando o id do mesmo
+  $categoria = DB::table('categorias')->where('id', $id)->update(['nome' => $nome]);
 
 });
