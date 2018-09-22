@@ -88,3 +88,10 @@ Route::get('/update/categorias/{id}/{nome}', function ($id, $nome) {
   $categoria = DB::table('categorias')->where('id', $id)->update(['nome' => $nome]);
 
 });
+
+Route::get('/delete/categorias/{id}', function ($id) {
+
+  //exclui no banco
+  DB::table('categorias')->where('id', $id)->delete();
+
+});
