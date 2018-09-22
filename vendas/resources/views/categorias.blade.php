@@ -9,3 +9,6 @@
   Nome: {{$nome}}</br>
   <hr>
 @endforeach
+
+<h1>Único objeto retornado do banco</h1>
+ID: {{$uma_categoria->id}} - Nome -> {{$uma_categoria->nome}}

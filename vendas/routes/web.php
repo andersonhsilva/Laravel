@@ -18,8 +18,54 @@ Route::get('/', function () {
 });
 
 Route::get('/categorias', function () {
+
+  // recupera todos os dados do banco na tabela especifica
   $categorias = DB::table('categorias')->get();
+
+  // recupera todos os dados do banco na tabela especifica
+  $categorias = DB::table('categorias')->where('id', 3)->get();
+
+  // where avançado
+  $categorias = DB::table('categorias')->where('nome', 'like', '%p%')->get();
+
+  // sentenças lógicas
+  $categorias = DB::table('categorias')->where('id', 1)->orWhere('id',2)->get();
+
+  // intervalos
+  $categorias = DB::table('categorias')->whereBetween('id', [1,3])->get();
+
+  // intervalos com negação
+  $categorias = DB::table('categorias')->whereNotBetween('id', [2,3])->get();
+
+  // retornar conjunto
+  $categorias = DB::table('categorias')->whereIn('id', [1,3,4])->get();
+
+  // retornar os que não estão no conjunto
+  $categorias = DB::table('categorias')->whereNotIn('id', [1,3,4])->get();
+
+  // sentenças logicas de vários where's
+  $categorias = DB::table('categorias')->where([
+    ['id', 1],
+    ['nome', 'roupas']
+  ])->get();
+
+  // ordenando por nome - asc / desc
+  $categorias = DB::table('categorias')->orderBy('nome','desc')->get();
+
+  //-----------------------------------------------------
+
+  // recupera todos os dados do banco na tabela especifica apenas do primeiro elemento
+  $categoria = DB::table('categorias')->where('id', 3)->first();
+
+  // recupera apenas uma tupla do banco de dados de uma tabela especifica
   $nomes = DB::table('categorias')->pluck('nome');
 
-  return view('categorias', compact('categorias','nomes')  );
+  return view('categorias')
+  ->with(compact('categorias','nomes'))
+  ->with('uma_categoria', $categoria);
+
+});
+
+Route::get('/', function () {
+    return view('welcome');
 });
