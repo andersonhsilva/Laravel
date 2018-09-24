@@ -26,11 +26,26 @@ Route::get('/insert/categoria/{nome}', function($nome) {
 
 Route::get('/list/categoria/', function() {
   $cat = Categoria::all();
+  /*
+  $cat = Categoria::onlyTrashed()->get();
+
+  // verifica se foi apagado
+  $cat = Categoria::withTrashed()->get();
+  if ($cat->trashed()){ }
+  */
   echo json_encode($cat);
 })->name('listar_categoria');
 
 Route::get('/get/categoria/{id}', function($id) {
   $cat = Categoria::find($id);
+  //  $cat = Categoria::withTrashed()->find($id);
+  //  $cat = Categoria::withTrashed()->where('id', $id)->get()->first();
+  echo json_encode($cat);
+})->name('captura_categoria_id')->where('id','[0-9]+');
+
+Route::get('/restore/categoria/{id}', function($id) {
+  $cat = Categoria::withTrashed()->where('id', $id)->get()->first();
+  $cat->restore();
   echo json_encode($cat);
 })->name('captura_categoria_id')->where('id','[0-9]+');
 
@@ -52,6 +67,7 @@ Route::get('/update/categoria/{id}/{nome}', function($id, $nome) {
 
 Route::get('/delete/categoria/{id}', function($id) {
   $cat = Categoria::find($id);
+//  $cat->forceDelete(); // isso apaga permanente no uso do softDelete
   $cat->delete();
   return redirect()->route('listar_categoria');
 })->name('atualizar_categoria')->where('id','[0-9]+');
