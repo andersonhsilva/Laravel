@@ -9,6 +9,9 @@
   </head>
   <body>
 
+    @component('layout.navbar', [ "current_link" => $current_link ])
+    @endcomponent
+
     @hasSection('body')
       @yield('body')
     @endif

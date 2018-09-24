@@ -1,7 +1,4 @@
-@extends('layout.base')
-
-@component('layout.navbar')
-@endcomponent
+@extends('layout.base',  [ "current_link" => "home" ])
 
 @section('body')
   <div class="jumbotron bg-light border border-secundary">

@@ -6,11 +6,11 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/produtos">Produtos <span class="sr-only">(current)</span></a>
+      <li @if($current_link=="produtos") class="nav-item active" @else class="nav-item" @endif>
+        <a class="nav-link" href="/produtos">Produtos</a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="/categorias">Categorias <span class="sr-only">(current)</span></a>
+      <li @if($current_link=="categorias") class="nav-item active" @else class="nav-item" @endif>
+        <a class="nav-link" href="/categorias">Categorias</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
