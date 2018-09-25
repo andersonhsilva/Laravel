@@ -36,6 +36,13 @@ class ClienteControlador extends Controller
      */
     public function store(Request $request)
     {
+        // validação do formulário via request
+        $request->validate([
+//          'nome' => 'required' // campo obrigatorio not null
+//          'nome' => 'required|min:5|max:20' // campo com quantidade de strnigsminima e maxima
+            'nome' => 'unique:clientes' // campo unico no banco
+        ]);
+
         $cliente = new Cliente();
         $cliente->nome = $request->input('nome');
         $cliente->idade = $request->input('idade');
