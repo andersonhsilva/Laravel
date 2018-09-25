@@ -1,4 +1,5 @@
-<div class="alert alert-{{$tipoErro}}" role="alert">
-  <div class="alert-title"><b>{{$titulo}}</b></div>
-  {{$slot}}
-</div>
+<p>
+  <div class="alert alert-{{$tipo}}" role="alert">
+    {{$slot}}
+  </div>
+</p>

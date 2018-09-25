@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('index');
 });
 
+// rotas dos produtos
 Route::get('/produtos', 'ControladorProduto@index');
 
+// rotas das categorias
 Route::get('/categorias', 'ControladorCategoria@index');
+Route::post('/categorias', 'ControladorCategoria@store');
+Route::get('/categorias/novo', 'ControladorCategoria@create')->name('categorias_novo');

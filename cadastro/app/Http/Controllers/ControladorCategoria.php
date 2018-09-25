@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Categoria; // adicionei o nome space da class
 
 class ControladorCategoria extends Controller
 {
@@ -13,7 +14,8 @@ class ControladorCategoria extends Controller
      */
     public function index()
     {
-        return view('categorias');
+      $cats = Categoria::all();
+      return view('categorias', compact('cats'));
     }
 
     /**
@@ -23,7 +25,7 @@ class ControladorCategoria extends Controller
      */
     public function create()
     {
-        //
+        return view('nova_categoria');
     }
 
     /**
@@ -34,7 +36,10 @@ class ControladorCategoria extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $cat = new Categoria();
+      $cat->nome = $request->input('nome');
+      $cat->save();
+      return view('nova_categoria')->with(['success' => 'Os dados foram cadastrados com sucesso.']);
     }
 
     /**
