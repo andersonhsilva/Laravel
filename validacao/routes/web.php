@@ -15,6 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/cliente/novo', function () {
-    return view('form_cliente');
-});
+Route::get('/cliente/lista', 'ClienteControlador@index');
+Route::get('/cliente/novo', 'ClienteControlador@create');
+Route::post('/cliente/novo', 'ClienteControlador@store');
