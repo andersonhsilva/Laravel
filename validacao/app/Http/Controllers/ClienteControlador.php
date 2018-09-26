@@ -38,11 +38,19 @@ class ClienteControlador extends Controller
     {
         // validação do formulário via request
         $request->validate([
-          'nome' => 'required|min:5|max:20',
-          'nome' => 'unique:clientes', // consulta o campo no banco para saber se os dados é único na tabela de clientes
-          'idade' => 'required',
+          // regras de validação para o campo
+          'nome' => 'required|min:5|max:20|unique:clientes', // consulta o campo no banco para saber se os dados é único na tabela de clientes
+          'idade' => 'required|integer',
           'endereco' => 'required|min:5',
           'email' => 'required|email',
+        ], [
+          // mensagens de retorno para o formulário
+          'required' => 'O campo :attribute não pode ficar em branco.',
+          'min' => 'O campo :attribute está com caracteres insuficientes.',
+          'max' => 'O campo :attribute está com caracteres em excesso.',
+          'email' => 'O campo :attribute nome está preenchido inválido.',
+          'unique' => 'O campo :attribute não pode ser repedido no banco de dados.',
+          'integer' => 'O campo :attribute deve ser um inteiro.',
         ]);
 
         $cliente = new Cliente();
