@@ -33,11 +33,11 @@
       </div>
       @if ($errors->any())
         <div class="card-footer">
+          <div class="alert alert-danger">
             @foreach($errors->all() as $error)
-            <div class="alert alert-danger">
-              {{ $error }}
-            </div>
+              <p>{{ $error }}</p>
             @endforeach
+          </div>
         </div>
       @endif
     </div>

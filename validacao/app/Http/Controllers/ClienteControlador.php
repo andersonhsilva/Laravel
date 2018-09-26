@@ -38,9 +38,11 @@ class ClienteControlador extends Controller
     {
         // validação do formulário via request
         $request->validate([
-//          'nome' => 'required' // campo obrigatorio not null
-//          'nome' => 'required|min:5|max:20' // campo com quantidade de strnigsminima e maxima
-            'nome' => 'unique:clientes' // campo unico no banco
+          'nome' => 'required|min:5|max:20',
+          'nome' => 'unique:clientes', // consulta o campo no banco para saber se os dados é único na tabela de clientes
+          'idade' => 'required',
+          'endereco' => 'required|min:5',
+          'email' => 'required|email',
         ]);
 
         $cliente = new Cliente();
