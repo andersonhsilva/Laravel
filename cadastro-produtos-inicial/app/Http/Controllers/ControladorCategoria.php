@@ -19,6 +19,12 @@ class ControladorCategoria extends Controller
         return view('categorias', compact('cats'));
     }
 
+    public function indexJson()
+    {
+        $cats = Categoria::all();
+        return json_encode($cats);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -101,34 +107,3 @@ class ControladorCategoria extends Controller
         return redirect('/categorias');
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
