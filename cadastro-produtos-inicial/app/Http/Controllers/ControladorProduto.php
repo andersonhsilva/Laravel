@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Produto;
+use Exception;
+use Illuminate\Database\QueryException;
 
 class ControladorProduto extends Controller
 {
@@ -41,7 +43,22 @@ class ControladorProduto extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $result = array();
+      try {
+        $prod = new Produto();
+        $prod->nome = $request->input('nomeProduto');
+        $prod->preco = $request->input('precoProduto');
+        $prod->estoque = $request->input('qtdProduto');
+        $prod->categoria_id = $request->input('categoriaProduto');
+        $prod->save();
+        $result = ["message_name" => "Cadastrado com sucesso!", "message_type" => "success", "message_exception" => null];
+
+      } catch (Exception $e){
+        $result = ["message_name" => "Erro ao cadastrar no banco de dados!", "message_type" => "danger", "message_exception" => $e];
+
+      } finally {
+        return json_encode($result);
+      }
     }
 
     /**

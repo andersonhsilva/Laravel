@@ -29,7 +29,7 @@
 <div class="modal" tabindex="-1" role="dialog" id="dlgProdutos">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form class="form-horizontal" id="formProduto">
+      <form class="form-horizontal" action="/api/produtos" id="formProduto" method="POST">
         <div class="modal-header">
           <h5 class="modal-title">Novo Produto</h5>
         </div>
@@ -38,34 +38,36 @@
           <div class="form-group">
             <label for="nomeProduto" class="control-label">Nome</label>
             <div class="input-group">
-              <input type="text" class="form-control" id="nomeProduto" placeholder="Nome do Produto">
+              <input type="text" class="form-control" name="nomeProduto" placeholder="Nome do Produto">
             </div>
           </div>
           <div class="form-group">
             <label for="precoProduto" class="control-label">Preço</label>
             <div class="input-group">
-              <input type="number" class="form-control" id="precoProduto" placeholder="Preço do Produto">
+              <input type="number" class="form-control" name="precoProduto" placeholder="Preço do Produto">
             </div>
           </div>
           <div class="form-group">
             <label for="qtdProduto" class="control-label">Qtd</label>
             <div class="input-group">
-              <input type="number" class="form-control" id="qtdProduto" placeholder="Qtd do Produto">
+              <input type="number" class="form-control" name="qtdProduto" placeholder="Qtd do Produto">
             </div>
           </div>
           <div class="form-group">
             <label for="nomeProduto" class="control-label">Nome</label>
             <div class="input-group">
-              <select class="form-control" id="categoriaProduto">
+              <select class="form-control" name="categoriaProduto" id="categoriaProduto">
               </select>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Salvar</button>
-            <button type="cancel" class="btn btn-secondary" data-dissmiss="modal">Cancelar</button>
+            <button type="submit" id="post_enviar" class="btn btn-primary">Salvar</button>
+            <button type="reset" onclick="javascript: $('#dlgProdutos').modal('hide');" class="btn btn-secondary" data-dissmiss="modal">Cancelar</button>
           </div>
         </div>
+        <div id="sts_form" class="alert alert-warning" style="display:none; margin-left: 20px; margin-right: 20px;"></div>
       </form>
+
     </div>
   </div>
 </div>
@@ -73,62 +75,124 @@
 
 @endsection
 
+<style media="screen">
+.rodar_infinito {
+		-webkit-animation: rotation 2s infinite linear;
+}
+@-webkit-keyframes rotation {
+		from {
+				-webkit-transform: rotate(0deg);
+		}
+		to {
+				-webkit-transform: rotate(359deg);
+		}
+}
+</style>
+
 @section('javascript')
 <script type="text/javascript">
 
+// nao precisa ficar gerando o token de segurança do laravel em cada formulario
+$.ajaxSetup({
+    // <input type="hidden" name="_token" value="xxxxxxxxxxxxxx">
+    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+});
+
+// chama o modal de formulário
 function novoProduto(){
   $('#dlgProdutos form input').val('');
+  $('#sts_form').hide();
   $('#dlgProdutos').modal('show');
 }
 
-function dados_linha_tabela(p){
-
-  var dados_tr_tab = "" +
-  "<tr>" +
-  "<td>" + p.id + "</td>" +
-  "<td>" + p.nome + "</td>" +
-  "<td>" + p.estoque + "</td>" +
-  "<td>" + p.preco + "</td>" +
-  "<td>" + p.categoria_id + "</td>" +
-  "<td>" +
-    '<button type="submit" class="btn btn-primary btn-sm">Editar</button>' +
-    '<button type="submit" class="btn btn-danger btn-sm">Apagar</button>' +
-  "</td>" +
-  "</tr>";
-
-  return dados_tr_tab;
-
-}
-
+// listar produtos do banco na tabela
 function carregarProdutos(){
+
+  var tab_carregar = "#tabProdutos";
+
+  $('table' + tab_carregar + ' tbody').html('<tr><td colspan="6" class="text-center"><i class="fas fa-spinner fa-2x rodar_infinito"></i> <span style="font-size: 20px;">Carregando...</span></td></tr>');
   $.getJSON('/api/produtos', function(data){
 
-    //console.log(data);
-
     for (var i = 0; i < data.length; i++) {
-      tag_tr = dados_linha_tabela(data[i]);
-      $('#tabProdutos tbody').append(tag_tr);
+
+      if (i == 0){ $('table' + tab_carregar + ' tbody').html(''); };
+      var dados_tr_tab = "" +
+
+      "<tr>" +
+      "<td>" + data[i].id + "</td>" +
+      "<td>" + data[i].nome + "</td>" +
+      "<td>" + data[i].estoque + "</td>" +
+      "<td>" + data[i].preco + "</td>" +
+      "<td>" + data[i].categoria_id + "</td>" +
+      "<td>" +
+        '<button type="submit" class="btn btn-primary btn-sm">Editar</button> ' +
+        '<button type="submit" class="btn btn-danger btn-sm">Apagar</button>' +
+      "</td>" +
+      "</tr>";
+
+      $('table' + tab_carregar + ' tbody').append(dados_tr_tab);
+
     }
   })
 }
 
+// carrega o campo de categoria pelo banco de dados
 function carregarCategorias(){
   $.getJSON('/api/categorias', function(data){
 
-    //console.log(data);
+    var element = "#categoriaProduto";
 
-    opcao = '<option value = "NULL">Escolha</option>'
-    $('#categoriaProduto').append(opcao);
-
+    $(element).append('<option value = "NULL">Escolha</option>');
     for (var i = 0; i < data.length; i++) {
-      opcao = '<option value = "' + data[i].id + '">' + data[i].nome + '</option>';
-      $('#categoriaProduto').append(opcao);
+      $(element).append('<option value = "' + data[i].id + '">' + data[i].nome + '</option>');
     }
   })
 }
 
-// carrega as funções inicias
+// enviar formulario via POST sem refresh na pagina
+$('button#post_enviar').click(function() {
+
+  var element_form = "#formProduto";
+  var element_result = "#sts_form";
+  var element_submit = $(this);
+  element_submit.attr('disabled', true);
+
+  $.ajax({
+    method: $(element_form).attr("method"),
+    url: $(element_form).attr("action"),
+    dataType: "json",
+    beforeSend: function() {
+      // show load before post
+      $(element_result).attr('class', 'alert alert-warning');
+      $(element_result).html('<i class="fas fa-spinner fa-1x rodar_infinito"></i> Enviando os dados, aguarde...').show();
+
+    }, data: $(element_form).serialize()}).done(function(data) {
+
+      // icon de success
+      if (data.message_type == "success"){ $(element_result).html('<i class="fas fa-check-circle"></i> ').attr('class', 'alert alert-success') };
+      // icon de danger
+      if (data.message_type == "danger"){ $(element_result).html('<i class="fas fa-exclamation-circle"></i> ').attr('class', 'alert alert-danger') };
+
+      // show text
+      $(element_result).append(data.message_name).attr('class', data.class).show();
+      element_submit.removeAttr('disabled');
+      setTimeout(function() { $(element_result).fadeOut('slow'); }, 9000);
+
+    });
+    return false;
+});
+
+function token(){
+  $.getJSON('/api/token', function(data){
+    var input_token = "#categoriaProduto";
+    $('input#' + input_token).text(data.token);
+  })
+
+}
+
+// carrega as funções inicias da pagina
 $(function(){
+  token();
   carregarProdutos();
   carregarCategorias();
 })

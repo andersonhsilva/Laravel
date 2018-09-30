@@ -7,10 +7,10 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li @if($current_link=="produtos") class="nav-item active" @else class="nav-item" @endif>
-        <a class="nav-link" href="/produtos">Produtos</a>
+        <a class="nav-link" href="/produtos"><i class="fas fa-user-tie fa-3x"></i> Produtos</a>
       </li>
       <li @if($current_link=="categorias") class="nav-item active" @else class="nav-item" @endif>
-        <a class="nav-link" href="/categorias">Categorias</a>
+        <a class="nav-link" href="/categorias"><i class="fas fa-archive fa-3x"></i> Categorias</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
