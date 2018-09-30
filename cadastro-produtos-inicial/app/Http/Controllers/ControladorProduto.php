@@ -51,7 +51,7 @@ class ControladorProduto extends Controller
         $prod->estoque = $request->input('qtdProduto');
         $prod->categoria_id = $request->input('categoriaProduto');
         $prod->save();
-        $result = ["message_name" => "Cadastrado com sucesso!", "message_type" => "success", "message_exception" => null];
+        $result = ["message_name" => "Cadastrado com sucesso!", "message_type" => "success", "result" => $prod];
 
       } catch (Exception $e){
         $result = ["message_name" => "Erro ao cadastrar no banco de dados!", "message_type" => "danger", "message_exception" => $e];

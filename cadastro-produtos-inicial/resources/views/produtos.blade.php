@@ -62,7 +62,7 @@
           </div>
           <div class="modal-footer">
             <button type="submit" id="post_enviar" class="btn btn-primary">Salvar</button>
-            <button type="reset" onclick="javascript: $('#dlgProdutos').modal('hide');" class="btn btn-secondary" data-dissmiss="modal">Cancelar</button>
+            <button type="cancel" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
           </div>
         </div>
         <div id="sts_form" class="alert alert-warning" style="display:none; margin-left: 20px; margin-right: 20px;"></div>
@@ -105,6 +105,22 @@ function novoProduto(){
   $('#dlgProdutos').modal('show');
 }
 
+function tupla_tabela(prod){
+  var result = "" +
+  "<tr>" +
+  "<td>" + prod.id + "</td>" +
+  "<td>" + prod.nome + "</td>" +
+  "<td>" + prod.estoque + "</td>" +
+  "<td>" + prod.preco + "</td>" +
+  "<td>" + prod.categoria_id + "</td>" +
+  "<td>" +
+    '<button type="submit" class="btn btn-primary btn-sm">Editar</button> ' +
+    '<button type="submit" class="btn btn-danger btn-sm">Apagar</button>' +
+  "</td>" +
+  "</tr>";
+  return result;
+}
+
 // listar produtos do banco na tabela
 function carregarProdutos(){
 
@@ -112,26 +128,11 @@ function carregarProdutos(){
 
   $('table' + tab_carregar + ' tbody').html('<tr><td colspan="6" class="text-center"><i class="fas fa-spinner fa-2x rodar_infinito"></i> <span style="font-size: 20px;">Carregando...</span></td></tr>');
   $.getJSON('/api/produtos', function(data){
-
     for (var i = 0; i < data.length; i++) {
-
-      if (i == 0){ $('table' + tab_carregar + ' tbody').html(''); };
-      var dados_tr_tab = "" +
-
-      "<tr>" +
-      "<td>" + data[i].id + "</td>" +
-      "<td>" + data[i].nome + "</td>" +
-      "<td>" + data[i].estoque + "</td>" +
-      "<td>" + data[i].preco + "</td>" +
-      "<td>" + data[i].categoria_id + "</td>" +
-      "<td>" +
-        '<button type="submit" class="btn btn-primary btn-sm">Editar</button> ' +
-        '<button type="submit" class="btn btn-danger btn-sm">Apagar</button>' +
-      "</td>" +
-      "</tr>";
-
-      $('table' + tab_carregar + ' tbody').append(dados_tr_tab);
-
+      if (i == 0){ $('table' + tab_carregar + ' tbody').html(''); }; // apaga o load
+      var produto = data[i];
+      var tupla = tupla_tabela(produto);
+      $('table' + tab_carregar + ' tbody').append(tupla);
     }
   })
 }
@@ -178,21 +179,18 @@ $('button#post_enviar').click(function() {
       element_submit.removeAttr('disabled');
       setTimeout(function() { $(element_result).fadeOut('slow'); }, 9000);
 
+      // adiciona o produto que foi cadastrado na tabela e retornado no result via json
+      if (data.result){
+        var tupla = tupla_tabela(data.result);
+        $('table#tabProdutos tbody').append(tupla);
+      }
+
     });
     return false;
 });
 
-function token(){
-  $.getJSON('/api/token', function(data){
-    var input_token = "#categoriaProduto";
-    $('input#' + input_token).text(data.token);
-  })
-
-}
-
 // carrega as funções inicias da pagina
 $(function(){
-  token();
   carregarProdutos();
   carregarCategorias();
 })
