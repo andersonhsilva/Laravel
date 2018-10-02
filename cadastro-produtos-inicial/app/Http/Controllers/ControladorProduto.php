@@ -21,6 +21,7 @@ class ControladorProduto extends Controller
 
     public function index()
     {
+      sleep(3);
       $prods = Produto::all();
       return $prods->toJson();
     }

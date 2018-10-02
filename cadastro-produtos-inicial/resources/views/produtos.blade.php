@@ -166,7 +166,7 @@ function carregarProdutos(){
 
   var tab_carregar = "#tabProdutos";
 
-  $('table' + tab_carregar + ' tbody').html('<tr><td colspan="6" class="text-center"><i class="fas fa-spinner fa-2x rodar_infinito"></i> <span style="font-size: 20px;">Carregando...</span></td></tr>');
+  $('table' + tab_carregar + ' tbody').html('<tr><td colspan="6" class="text-center"><i class="fas fa-spinner fa-2x rodar_infinito" style="margin-top: 100px; margin-bottom: 100px;"></i> <span style="font-size: 20px;">Carregando...</span></td></tr>');
   $.getJSON('/api/produtos', function(data){
     for (var i = 0; i < data.length; i++) {
       if (i == 0){ $('table' + tab_carregar + ' tbody').html(''); }; // apaga o load
