@@ -38,19 +38,19 @@
           <div class="form-group">
             <label for="nomeProduto" class="control-label">Nome</label>
             <div class="input-group">
-              <input type="text" class="form-control" name="nomeProduto" placeholder="Nome do Produto">
+              <input type="text" class="form-control" name="nomeProduto" id="nomeProduto" placeholder="Nome do Produto">
             </div>
           </div>
           <div class="form-group">
             <label for="precoProduto" class="control-label">Preço</label>
             <div class="input-group">
-              <input type="number" class="form-control" name="precoProduto" placeholder="Preço do Produto">
+              <input type="number" class="form-control" name="precoProduto" id="precoProduto" placeholder="Preço do Produto">
             </div>
           </div>
           <div class="form-group">
             <label for="qtdProduto" class="control-label">Qtd</label>
             <div class="input-group">
-              <input type="number" class="form-control" name="qtdProduto" placeholder="Qtd do Produto">
+              <input type="number" class="form-control" name="qtdProduto" id="qtdProduto" placeholder="Qtd do Produto">
             </div>
           </div>
           <div class="form-group">
@@ -121,6 +121,24 @@ function tupla_tabela(prod){
   return result;
 }
 
+// alteração de produtos
+function editar(id){
+  $.getJSON('/api/produtos/' + id, function(data){
+    // popula o formulário para alteração
+    $('#id').val(data.id);
+    $('#nomeProduto').val(data.nome);
+    $('#precoProduto').val(data.preco);
+    $('#qtdProduto').val(data.estoque);
+    $('#categoriaProduto').val(data.categoria_id);
+    $('#dlgProdutos').modal('show');
+
+    // seta o metodo do formulário para PUT e a rota de alteração com id
+    $('form#formProduto').attr("action","/api/produtos/"+ id);
+    $('form#formProduto').attr("method","PUT");
+
+  })
+}
+
 function remover(id){
   $.ajax({
     type: "DELETE",
@@ -128,6 +146,7 @@ function remover(id){
     context: this,
     success: function(){
       console.log('Apagou ok!');
+      // remove a linha do registro na tabela
       trs_tabela = $('table#tabProdutos tbody tr');
       tr_elemento = trs_tabela.filter(function(i, elemento){
         return elemento.cells[0].textContent == id;
@@ -201,9 +220,25 @@ $('button#post_enviar').click(function() {
       setTimeout(function() { $(element_result).fadeOut('slow'); }, 9000);
 
       // adiciona o produto que foi cadastrado na tabela e retornado no result via json
-      if (data.result){
+      if (data.result && $('#id').val() == ''){
         var tupla = tupla_tabela(data.result);
         $('table#tabProdutos tbody').append(tupla);
+      }
+
+      // atualiza a linha do registro na tabela
+      if (data.result && $('#id').val() != ''){
+        var prod = data.result;
+        trs_tabela = $('table#tabProdutos tbody tr');
+        tr_elemento = trs_tabela.filter(function(i, elemento){
+          return elemento.cells[0].textContent == prod.id;
+        });
+        if (tr_elemento){
+          tr_elemento[0].cells[0].textContent = prod.id;
+          tr_elemento[0].cells[1].textContent = prod.nome;
+          tr_elemento[0].cells[2].textContent = prod.preco;
+          tr_elemento[0].cells[3].textContent = prod.estoque;
+          tr_elemento[0].cells[4].textContent = prod.categoria_id;
+        }
       }
 
     });
