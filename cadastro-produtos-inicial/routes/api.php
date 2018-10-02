@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/categorias', 'ControladorCategoria@indexJson');
 Route::get('/produtos', 'ControladorProduto@index');
 Route::post('/produtos', 'ControladorProduto@store');
+Route::delete('/produtos/{id}', 'ControladorProduto@destroy');

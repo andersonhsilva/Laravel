@@ -114,11 +114,32 @@ function tupla_tabela(prod){
   "<td>" + prod.preco + "</td>" +
   "<td>" + prod.categoria_id + "</td>" +
   "<td>" +
-    '<button type="submit" class="btn btn-primary btn-sm">Editar</button> ' +
-    '<button type="submit" class="btn btn-danger btn-sm">Apagar</button>' +
+    '<button type="submit" class="btn btn-primary btn-sm" onclick="javascript:editar(' + prod.id + ')">Editar</button> ' +
+    '<button type="submit" class="btn btn-danger btn-sm" onclick="javascript:remover(' + prod.id + ')">Apagar</button>' +
   "</td>" +
   "</tr>";
   return result;
+}
+
+function remover(id){
+  $.ajax({
+    type: "DELETE",
+    url: "/api/produtos/" + id,
+    context: this,
+    success: function(){
+      console.log('Apagou ok!');
+      trs_tabela = $('table#tabProdutos tbody tr');
+      tr_elemento = trs_tabela.filter(function(i, elemento){
+        return elemento.cells[0].textContent == id;
+      });
+      if (tr_elemento){
+        tr_elemento.remove();
+      }
+    },
+    error: function(error){
+      console.log(error);
+    }
+  });
 }
 
 // listar produtos do banco na tabela
