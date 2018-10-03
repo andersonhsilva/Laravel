@@ -61,6 +61,14 @@ Route::get('/inserir', function(){
 //  $end->cliente_id = $cli->id; // uma forma de salvar os relacionamento
   $cli->endereco()->save($end); // outra forma mais elegante de salvar os relacionamento, assim nao precisa saver quais as chaves
 
+});
 
+Route::get('/clientes/json', function () {
+    // apesar do all a exibição é lazy loading -> carregamento resumido
+    // $clientes = Cliente::all();
+    // return $clientes->toJson();
 
+    // agora com o with a exibição é Eager loading -> carregamento com mais objetos relacionados
+    $clientes = Cliente::with(['endereco'])->get();
+    return $clientes->toJson();
 });
