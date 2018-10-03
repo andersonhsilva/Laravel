@@ -13,6 +13,7 @@
 
 use App\Categoria;
 use App\Produto;
+use Exception;
 
 Route::get('/categorias', function () {
     $cats = Categoria::all();
@@ -72,7 +73,11 @@ Route::get('/produtos', function () {
           echo "<td>".$p->nome."</td>";
           echo "<td>".$p->preco."</td>";
           echo "<td>".$p->qtd."</td>";
+        try {
           echo "<td>".$p->categoria->nome."</td>";
+        } catch (Exception $e){
+          echo "<td> </td>";
+        }
         echo "<tr>";
       }
       echo "</tbody>";
@@ -107,4 +112,18 @@ Route::get('/dissociate/produto', function () {
   }
 
   return 'error -> produto nao encontrado! :(';
+});
+
+Route::get('/add/produto/{cat_id}', function ($id) {
+  $cat = Categoria::with('produtos')->find($id);
+
+  $p = new Produto();
+  $p->nome = "Amburger duplo com baicon";
+  $p->preco = 10.00;
+  $p->qtd = 1;
+
+  if (isset($cat)){
+    $cat->produtos()->save($p);
+  }
+  return $cat->toJson();
 });
