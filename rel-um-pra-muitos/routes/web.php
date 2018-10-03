@@ -25,6 +25,28 @@ Route::get('/categorias', function () {
     }
 });
 
+
+Route::get('/cat_prod', function () {
+    $cats = Categoria::all();
+    if (count($cats) === 0) {
+      echo "<h4>Voce não possui nenhuma categoria cadastrada</h4>";
+    } else {
+      foreach ($cats as $c) {
+        echo "<p>".$c->id." - ".$c->nome."</p>";
+        $produtos = $c->produtos; // captura todos os produtos pelo relacionamento hasMany do modelo de categoria
+        if (count($produtos) > 0){
+          echo "<ul>";
+          foreach ($produtos as $p) {
+            echo "<li>".$p->nome."</li>";
+          }
+          echo "</ul>";
+        }
+      }
+    }
+});
+
+
+
 Route::get('/produtos', function () {
     $prods = Produto::all();
     if (count($prods) === 0) {
