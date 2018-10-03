@@ -38,6 +38,6 @@ Route::get('/clientes', function () {
 Route::get('/enderecos', function () {
     $endereco = Endereco::all();
     foreach ($endereco as $end) {
-      echo "Rua: $end->rua Numero: $end->numero Bairro: $end->bairro Cidade: $end->cidade UF: $end->uf CEP: $end->cep <br>";
+      echo "(Cliente: ".$end->cliente->nome.") Rua: $end->rua Numero: $end->numero Bairro: $end->bairro Cidade: $end->cidade UF: $end->uf CEP: $end->cep <br>";
     }
 });
