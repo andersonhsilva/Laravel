@@ -45,7 +45,10 @@ Route::get('/cat_prod', function () {
     }
 });
 
-
+Route::get('/cat_prod/json', function () {
+  $cats = Categoria::with('produtos')->get();
+  return $cats->toJson();
+});
 
 Route::get('/produtos', function () {
     $prods = Produto::all();
