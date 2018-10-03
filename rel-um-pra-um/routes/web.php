@@ -41,3 +41,26 @@ Route::get('/enderecos', function () {
       echo "(Cliente: ".$end->cliente->nome.") Rua: $end->rua Numero: $end->numero Bairro: $end->bairro Cidade: $end->cidade UF: $end->uf CEP: $end->cep <br>";
     }
 });
+
+Route::get('/inserir', function(){
+
+  // cliente
+  $cli = new Cliente();
+  $cli->nome = "anderson Henrique";
+  $cli->telefone = "37219999";
+  $cli->save();
+
+  // endereco
+  $end = new Endereco();
+  $end->rua = "av estrada";
+  $end->numero = "486 a";
+  $end->bairro = "boa vista";
+  $end->cidade = "recife";
+  $end->uf = "pe";
+  $end->cep = "55000000";
+//  $end->cliente_id = $cli->id; // uma forma de salvar os relacionamento
+  $cli->endereco()->save($end); // outra forma mais elegante de salvar os relacionamento, assim nao precisa saver quais as chaves
+
+
+
+});
