@@ -78,3 +78,33 @@ Route::get('/produtos', function () {
       echo "</tbody>";
     }
 });
+
+Route::get('/add/produto', function () {
+  $cat = Categoria::find(1);
+
+  $p = new Produto();
+  $p->nome = "Meu novo produto";
+  $p->preco = 1.00;
+  $p->qtd = 1;
+
+  // uma forma de fazer o relacionamento
+  //$p->categoria_id = $cat->id;
+
+  // outra  forma mais elegante de fazer o relacionamento
+  $p->categoria()->associate($cat);
+
+  $p->save();
+  return $p->toJson();
+});
+
+
+Route::get('/dissociate/produto', function () {
+  $p = Produto::find(9);
+  if (isset($p)){
+    $p->categoria()->dissociate();
+    $p->save();
+    return $p->toJson();
+  }
+
+  return 'error -> produto nao encontrado! :(';
+});
