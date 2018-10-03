@@ -118,12 +118,13 @@ Route::get('/add/produto/{cat_id}', function ($id) {
   $cat = Categoria::with('produtos')->find($id);
 
   $p = new Produto();
-  $p->nome = "Amburger duplo com baicon";
+  $p->nome = "rack penteadeira";
   $p->preco = 10.00;
   $p->qtd = 1;
 
   if (isset($cat)){
     $cat->produtos()->save($p);
   }
+  $cat->load('produtos'); // atualiza a instancia de produtos listados
   return $cat->toJson();
 });
