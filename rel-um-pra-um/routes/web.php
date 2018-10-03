@@ -22,10 +22,15 @@ Route::get('/clientes', function () {
     $clientes = Cliente::all();
     foreach ($clientes as $cli) {
       // consulta simples do larvel
-      echo "ID: $cli->id Nome: $cli->nome Telefone: $cli->telefone <br>";
-      // subconsulta no banco de forma manual pelo laravel
-      $end = Endereco::where('cliente_id', $cli->id)->first();
-      echo "Rua: $end->rua Numero: $end->numero Bairro: $end->bairro Cidade: $end->cidade UF: $end->uf CEP: $end->cep <br>";
+      echo "ID: ".$cli->id." Nome: ".$cli->nome." Telefone: ".$cli->telefone." <br>";
+
+      echo "Idade: ".$cli->idade."<br>";
+
+// subconsulta no banco de forma manual pelo laravel
+//      $end = Endereco::where('cliente_id', $cli->id)->first();
+//      echo "Rua: $end->rua Numero: $end->numero Bairro: $end->bairro Cidade: $end->cidade UF: $end->uf CEP: $end->cep <br>";
+
+      echo "Rua: ".$cli->endereco->rua." Numero: ".$cli->endereco->numero." Bairro: ".$cli->endereco->bairro." Cidade: ".$cli->endereco->cidade." UF: ".$cli->endereco->uf." CEP: ".$cli->endereco->cep." <br>";
       echo "-----------------------------------------<br>";
     }
 });
