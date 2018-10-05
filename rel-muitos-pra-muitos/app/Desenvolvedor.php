@@ -11,6 +11,7 @@ class Desenvolvedor extends Model
 
 
   public function projetos(){
-    return $this->belongsToMany('App\Projeto', 'alocacoes');
+    // a função a baixo retorna um relacionamento muitos para muitos com o parametro withPivot -> campos alem das tuplas pivot que relaciona os ids
+    return $this->belongsToMany('App\Projeto', 'alocacoes')->withPivot(['horas_semanais']);
   }
 }

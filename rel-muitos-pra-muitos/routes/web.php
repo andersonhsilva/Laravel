@@ -22,6 +22,8 @@ Route::get('/', function () {
 Route::get('/desenvolvedor_projeto', function () {
 
   $desenvolvedores = Desenvolvedor::with('projetos')->get();
+//  return $desenvolvedores->toJson();
+
 
   foreach ($desenvolvedores as $d) {
     echo "<p>nome: ". $d->nome."<br>";
@@ -31,11 +33,13 @@ Route::get('/desenvolvedor_projeto', function () {
       foreach ($d->projetos as $p) {
         echo "<b>-----Projetos-----</b>: <br>";
         echo "<li>Nome: ".$p->nome."</li>";
-        echo "<li>Horas estimadas:".$p->estimativa_horas."</li>";
+        echo "<li>Horas estimadas: ".$p->estimativa_horas."</li>";
+        echo "<li>Horas semanais: ".$p->pivot->horas_semanais."</li>";
       }
       echo "</ul>";
     }
     echo "<hr>";
   }
+
 
 });
