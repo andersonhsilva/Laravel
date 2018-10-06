@@ -14,6 +14,7 @@
 use App\Projeto;
 use App\Desenvolvedor;
 use App\Alocacao;
+use Illuminate\Database\QueryException;
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,5 +42,35 @@ Route::get('/desenvolvedor_projeto', function () {
     echo "<hr>";
   }
 
+
+});
+
+Route::get('/projeto_desenvolvedores', function () {
+
+  $projeto = Projeto::with('desenvolvedores')->get();
+  return $projeto->toJson();
+
+});
+
+Route::get('/alocar', function () {
+  try {
+
+    $projeto = Projeto::find(4);
+    if (isset($projeto)){
+      // adicionando um desenvolvedor no relacionamento
+      // $projeto->desenvolvedores()->attach(2, ['horas_semanais' => 999]);
+
+      // adicionar varios desenvolvedores simultaneamente no relacionamento
+      $projeto->desenvolvedores()->attach([
+        3 => ['horas_semanais' => 999],
+      ]);
+    }
+
+    // verifica na exception se possui duplicidade no banco
+  } catch (QueryException $e){
+    if (strpos($e->getMessage(), 'Duplicate')){
+        echo "não pode vincular o mesmo desenvolvedor em um projeto";
+    }
+  }
 
 });

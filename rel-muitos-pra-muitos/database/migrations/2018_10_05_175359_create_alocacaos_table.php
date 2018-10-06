@@ -16,11 +16,14 @@ class CreateAlocacaosTable extends Migration
         Schema::create('alocacoes', function (Blueprint $table) {
           $table->integer('desenvolvedor_id')->unsigned();
           $table->foreign('desenvolvedor_id')->references('id')->on('desenvolvedores');
+
           $table->integer('projeto_id')->unsigned();
           $table->foreign('projeto_id')->references('id')->on('projetos');
+
           $table->integer('horas_semanais');
           $table->timestamps();
-          $table->primary(['projeto_id', 'desenvolvedor_id']);
+
+          $table->primary(['desenvolvedor_id', 'projeto_id']);
         });
     }
 
