@@ -74,3 +74,12 @@ Route::get('/alocar', function () {
   }
 
 });
+
+Route::get('/desalocar', function () {
+  $projeto = Projeto::find(4);
+  if (isset($projeto)){
+    // removendo um ou varios desenvolvedores no relacionamento
+    $projeto->desenvolvedores()->detach([2,3]);
+  }
+
+});
