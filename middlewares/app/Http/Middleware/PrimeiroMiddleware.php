@@ -21,9 +21,8 @@ class PrimeiroMiddleware
     // parei a proximo request que possivelmente será alguma rotina de verificação do sistema filtro e etc
     //return response('Proibido o next!');
     $response = $next($request);
-
     Log::debug('passou pelo primeiro middleware DEPOIS!');
-
-    return $response;
+    //return $response;
+    return $response->setContent('Alterei a resposta');
   }
 }
