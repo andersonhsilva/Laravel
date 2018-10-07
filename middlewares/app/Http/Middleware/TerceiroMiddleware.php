@@ -14,9 +14,9 @@ class TerceiroMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $nome)
+    public function handle($request, Closure $next, $nome, $idade)
     {
-        Log::debug("passou pelo terceiro middleware [ nome = $nome ]");
+        Log::debug("passou pelo terceiro middleware [ nome = $nome, $idade ]");
         return $next($request);
     }
 }
