@@ -23,6 +23,7 @@ class PrimeiroMiddleware
     $response = $next($request);
     Log::debug('passou pelo primeiro middleware DEPOIS!');
     //return $response;
-    return $response->setContent('Alterei a resposta');
+//    return $response->setContent('Alterei a resposta');
+    return response('criei uma outra resposta', 201); // criando um novo response
   }
 }
