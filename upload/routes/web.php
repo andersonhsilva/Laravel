@@ -11,12 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/admin', 'AdminController@index')->name('homeAdmin');
+Route::get('/', 'PostControlador@index');
+Route::post('/', 'PostControlador@store');
+Route::delete('/{id}', 'PostControlador@destroy');
+Route::get('/download/{id}', 'PostControlador@download');
